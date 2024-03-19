@@ -149,12 +149,30 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         result=num1*num2;
         break;
       case Btn.divide:
-        result=num1/num2;
+        if (num2 != 0) {
+          result=num1/num2;
+        }
+        else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'На ноль делить нельзя',
+              )
+            )
+          );
+          break;
+        }
+        
         break;
         default:
     }
     setState(() {
-      number1 = '$result';
+      if (result ==0) {
+        number1 = '';
+      }
+      else {
+        number1 = '$result';
+      }
       if (number1.endsWith('.0')) {
         number1 = number1.substring(0, number1.length - 2);
       }
@@ -223,7 +241,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         //number1 = ''|'0'
         value = '0.';
       }
-
+      
       number1 += value;
     }
     //assign value to number 2 variable
