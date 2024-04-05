@@ -52,7 +52,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       .map(
                         (value) => SizedBox(
                             width: value == Btn.n0
-                                ? screenSize.width / 2
+                                ? screenSize.width / 4
                                 : (screenSize.width / 4),
                             height: screenSize.width / 5,
                             child: buildButton(value)),
@@ -123,11 +123,34 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       calculate();
       return;
     }
+    if (value == Btn.reverse) {
+      reverse();
+      return;
+    }
 
 
     appendValue(value);
   }
 
+  void reverse(){
+
+    if (number1.isNotEmpty && number2.isEmpty) {
+      setState(() {
+        number1 = (double.parse(number1) * -1).toString();
+        if (number1.endsWith('.0')) {
+        number1 = number1.substring(0, number1.length - 2);
+      }
+      });
+    }
+    if (number1.isNotEmpty && number2.isNotEmpty) {
+      setState(() {
+        number2 = (double.parse(number2) * -1).toString();
+        if (number2.endsWith('.0')) {
+        number2 = number2.substring(0, number2.length - 2);
+      }
+      });
+    }
+  }
   ///////
   //calculates the result 
   void calculate() {
@@ -229,6 +252,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     if (value != Btn.dot && int.tryParse(value) == null) {
       //operand pressed
       if (operand.isNotEmpty && number2.isNotEmpty) {calculate();}
+      if (operand.isEmpty && number1.isEmpty && value == "-" ) {}
       operand = value;
     }
     //assign value to number 1 variable
